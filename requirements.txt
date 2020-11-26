@@ -1,4 +1,4 @@
-python == 3.7
-vtk == 8.1.2
+python == 3.7.9
+vtk == 8.2.0
 scipy == 1.5.2
 numpy == 1.19.2
