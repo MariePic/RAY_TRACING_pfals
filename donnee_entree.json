@@ -26,7 +26,8 @@
     "unit": "cm",
     "width": 200,
     "n_paroi": 1.5,
-    "n_air": 1
+    "n_air": 1,
+    "reflection" : "speculaire"
   }
   
 }
