@@ -3,4 +3,5 @@ scipy == 1.5.2
 numpy == 1.19.2
 json5 == 0.9.5
 panel == 0.9.7
-Python == 7.18.1
+IPython == 7.18.1
+Ipykernel == 5.3.4
