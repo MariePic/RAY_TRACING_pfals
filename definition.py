@@ -33,8 +33,8 @@ def addPoint(renderer, p, color=[0.0, 0.0, 0.0], radius=0.01, opacity=1):
     point = vtk.vtkSphereSource()
     point.SetCenter(p)
     point.SetRadius(radius)
-    point.SetPhiResolution(10)
-    point.SetThetaResolution(10)
+    point.SetPhiResolution(35)
+    point.SetThetaResolution(35)
 
     mapper = vtk.vtkPolyDataMapper()
     mapper.SetInputConnection(point.GetOutputPort())
@@ -143,6 +143,38 @@ def GetIntersect_plant(obbTree, pSource, pTarget):
     return ptsInter, cIdsInter
 
 
+
+def GetIntersect_diffusion(obbTree, pSource, pTarget):
+    
+    # Create an empty 'vtkPoints' object to store the intersection point coordinates
+    points = vtk.vtkPoints()
+    # Create an empty 'vtkIdList' object to store the ids of the cells that intersect
+    # with the cast rays
+    cellIds = vtk.vtkIdList()
+    
+    # Perform intersection
+    code = obbTree.IntersectWithLine(pSource, pTarget, points, cellIds)
+    
+    # Get point-data 
+    pointData = points.GetData()
+    # Get number of intersection points found
+    noPoints = pointData.GetNumberOfTuples()
+    # Get number of intersected cell ids
+    noIds = cellIds.GetNumberOfIds()
+    
+    assert (noPoints == noIds)
+    
+    # Loop through the found points and cells and store
+    # them in lists
+    pts = []
+    cIds = []
+    for idx in range(noPoints):
+        pts.append(pointData.GetTuple3(idx))
+        cIds.append(cellIds.GetId(idx))
+    
+    return pts, cIds
+
+
 def calcVecR(vecInc, vecNor):
     vecInc = l2n(vecInc)
     vecNor = l2n(vecNor)
@@ -152,7 +184,10 @@ def calcVecR(vecInc, vecNor):
     return n2l(vecRef)
 
 
-def Fresnel(n1, n2, vecInc, vecNor):
+def Fresnel(n1, n2, vecInc, vecNor, RMS, longueur):
+    
+    vecInc = l2n(vecInc)
+    vecNor = l2n(vecNor)
     
     thetai = numpy.dot(vecInc, vecNor)
     
@@ -163,6 +198,9 @@ def Fresnel(n1, n2, vecInc, vecNor):
     R_perpendiculaire = ((n2*numpy.cos(thetai) - n1*cos_thetat)/(n2*numpy.cos(thetai) + n1*cos_thetat))**2
     
     R = (R_parallele + R_perpendiculaire)/2
-    T = 1-R
+    T = 1-R #transmis
     
-    return R, T
+    D = R * (1-numpy.exp(-4*numpy.pi*n1*RMS/longueur)**2) #diffuse
+    S = 1-D #spéculaire
+    
+    return S, T, D
