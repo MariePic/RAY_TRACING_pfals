@@ -21,13 +21,12 @@
   
   "room": {
     "ceiling-height": 100,
-    "disp-coef": 0.7,
     "height": 150,
     "unit": "cm",
     "width": 200,
     "n_paroi": 1.5,
     "n_air": 1,
-    "reflection" : "speculaire"
+    "n_plante": 2
   }
   
 }
