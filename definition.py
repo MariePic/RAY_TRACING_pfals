@@ -84,26 +84,19 @@ def isHit(obbTree, pSource, pTarget):
 
 def GetIntersect(obbTree, pSource, pTarget):
     
-    # Create an empty 'vtkPoints' object to store the intersection point coordinates
+
     points = vtk.vtkPoints()
-    # Create an empty 'vtkIdList' object to store the ids of the cells that intersect
-    # with the cast rays
     cellIds = vtk.vtkIdList()
-    
-    # Perform intersection
+
     code = obbTree.IntersectWithLine(pSource, pTarget, points, cellIds)
     
-    # Get point-data 
+ 
     pointData = points.GetData()
-    # Get number of intersection points found
     noPoints = pointData.GetNumberOfTuples()
-    # Get number of intersected cell ids
     noIds = cellIds.GetNumberOfIds()
     
     assert (noPoints == noIds)
     
-    # Loop through the found points and cells and store
-    # them in lists
     pointsInter = []
     cellIdsInter = []
     for idx in range(noPoints):
@@ -121,15 +114,15 @@ def calcVecR(vecInc, vecNor):
     
     return n2l(vecRef)
 
-def calcAngle(vecInc,vecNor): 
-    vecInc = l2n(vecInc)
-    vecNor = l2n(vecNor)
+def calcAngle(A,B): 
+    A = l2n(A)
+    B = l2n(B)
     
-    prodscal = vecInc[0] * vecNor[0] + vecInc[1] * vecNor[1] + vecInc[2] * vecNor[2]
-    NormevecInc = numpy.sqrt(vecInc[0]**2 + vecInc[1]**2 + vecInc[2]**2)
-    NormevecNor = numpy.sqrt(vecNor[0]**2 + vecNor[1]**2 + vecNor[2]**2)
+    prodscal = A[0] * B[0] + A[1] * B[1] + vA[2] * vB[2]
+    NormeA = numpy.sqrt(A[0]**2 + A[1]**2 + A[2]**2)
+    NormeB = numpy.sqrt(B[0]**2 + B[1]**2 + B[2]**2)
    
-    return numpy.arccos( prodscal / (NormevecInc * NormevecNor))
+    return numpy.arccos( prodscal / (NormeA * NormeB))
 
 
 def Fresnel(n1, n2, vecInc, vecNor):
