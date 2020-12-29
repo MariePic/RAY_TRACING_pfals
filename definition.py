@@ -118,7 +118,7 @@ def calcAngle(A,B):
     A = l2n(A)
     B = l2n(B)
     
-    prodscal = A[0] * B[0] + A[1] * B[1] + vA[2] * vB[2]
+    prodscal = A[0] * B[0] + A[1] * B[1] + A[2] * B[2]
     NormeA = numpy.sqrt(A[0]**2 + A[1]**2 + A[2]**2)
     NormeB = numpy.sqrt(B[0]**2 + B[1]**2 + B[2]**2)
    
