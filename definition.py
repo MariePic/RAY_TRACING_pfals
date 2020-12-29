@@ -131,19 +131,19 @@ def Fresnel(n1, n2, vecInc, vecNor):
     
     thetai = calcAngle(vecInc,vecNor)
     
+    if thetai < numpy.arcsin((n1/n2)*sin(thetai)):
+      sin_thetat_2 = ((n1/n2)**2)*numpy.sin(thetai)**2
+      cos_thetat = numpy.sqrt(1-sin_thetat_2)
     
-    sin_thetat_2 = ((n1/n2)**2)*numpy.sin(thetai)**2
-    cos_thetat = numpy.sqrt(1-sin_thetat_2)
+      R_parallele = ((n1*numpy.cos(thetai) - n2*cos_thetat)/(n1*numpy.cos(thetai) + n2*cos_thetat))**2
+      R_perpendiculaire = ((n2*numpy.cos(thetai) - n1*cos_thetat)/(n2*numpy.cos(thetai) + n1*cos_thetat))**2
     
-    R_parallele = ((n1*numpy.cos(thetai) - n2*cos_thetat)/(n1*numpy.cos(thetai) + n2*cos_thetat))**2
-    R_perpendiculaire = ((n2*numpy.cos(thetai) - n1*cos_thetat)/(n2*numpy.cos(thetai) + n1*cos_thetat))**2
+      R = (R_parallele + R_perpendiculaire)/2
+      T = 1-R #transmis
     
-    R = (R_parallele + R_perpendiculaire)/2
-    T = 1-R #transmis
-    
-    if R > 1: 
-      R = 1
-      T = 0  
+    else:
+       R = 1
+       T = 0 
     x = random.choices(['R', 'T'], weights = [R, T])
     
     return x
